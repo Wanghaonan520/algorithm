@@ -1,0 +1,61 @@
+#include<bits/stdc++.h>//网上查到的C++万能库 
+using namespace std;
+void Prim(int n,int c[ ][100])
+{
+    int  lowcost[100];//各非树顶点到树顶点集的最短路径
+    int closet[100];//非树顶点到树顶点集的最小边中相对的顶点
+    bool foot[n+1];//表示是否已经为树顶点，初始为false,若此点bool值为true则被选择作为生成树顶点 
+    memset(lowcost,0,sizeof(lowcost));//将指针变量 lowcost 所指向的前 sizeof 字节的内存单元替换为0 
+    memset(closet,0,sizeof(closet));
+    foot[1]=true;//假设先把1作为初始顶点
+    for(int i=2;i<=n;i++){//假设从节点一开始
+        foot[i]=false;
+        closet[i]=1;
+        lowcost[i]=c[1][i];
+    }
+    for(int i=1;i<n;i++){
+        int  min=99999;
+        int j=1;
+        for(int k=2;k<=n;k++){//计算非树顶点到树顶点集的最短路径，并把对应顶点记为j
+            if((lowcost[k]<min)&&(foot[k]==false)){
+                min=lowcost[k];
+                j=k;
+            }
+        }
+        cout <<"选边"<< "("<<closet[j] << "," <<j<<")" << endl;//把改变归为已选边，并把foot[j]设为true
+        foot[j]=true;
+        for(int k=2;k<=n;k++){//由于新的顶点加入树顶点，所以要更新非树顶点到树顶点集的最短路径lowcost[j]，和对应的clost[j]
+            if((c[j][k]<lowcost[k])&&(foot[k]==false)){
+                lowcost[k]=c[j][k];
+                closet[k]=j;
+            }
+        }
+    }
+
+
+}
+int main()
+{
+    cout << "请输入图的顶点数" << endl;
+    int n;
+    cin >>n;
+    cout << "请输入图的边数" << endl;
+    int m;
+    cin >> m;
+    cout << "请输入图的边的两个端点和边的长度" << endl;
+    int c[100][100];
+    for(int i=1;i<=n;i++){
+        for(int j=1;j<=n;j++){
+            c[i][j]=99999;
+        }
+    }
+    int i1,j1,k;
+    for(int i=1;i<=m;i++){
+        cin >>i1 >> j1 >> k;
+        c[i1][j1]=k;//将连两点之间的全权值存入数组 
+        c[j1][i1]=k;
+    }
+    Prim(n,c);
+    return 0;
+
+}
