@@ -1,0 +1,35 @@
+#include<bits/stdc++.h>
+using namespace std;
+int main(void){
+	int array[] = {65,2,6,1,90,78,105,67,35,23,3,88,-22};
+	Merge(num);
+	cout<<num; 
+}
+void Merge(int list[],int left,int mid,int right){
+	int mergelist[maxn];//最后排序好的数组	
+	int i = left;
+	int j = mid + 1;
+	int k = left;
+	while (i <= mid && j <= right){//将左右两端的数据进行比较，放入结果数组 
+		if (list[i] < list[j]) mergelist[k++] = list[i++];
+		else mergelist[k++] = list[j++]; 		
+	}
+	//将剩余的数字放入数组
+	while (i <= mid){
+		mergelist[k++] = list[i++];
+		
+	} 
+	while (j < right){
+		mergelist[k++] = list[j++];
+	}
+	for(k = left;k <= right; k++)
+	list[k] = mergelist[k];
+	}
+	void MergeSort(int list[],int left,int right){
+		if(left < right){
+			int mid = (left + right)/2;//从中间拆分
+			MergeSort(list,left,mid);
+			MergeSort(list,mid+1,right);
+			Merge(list,left,mid,right);//归并 
+		}
+	}
